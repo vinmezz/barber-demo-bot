@@ -1,0 +1,13 @@
+{
+  "name": "barber-demo-la-bot",
+  "version": "1.0.0",
+  "description": "Telegram barber bot for @prime_service_la_bot",
+  "main": "barber_bot.js",
+  "scripts": {
+    "start": "node barber_bot.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "@anthropic-ai/sdk": "^0.20.0"
+  }
+}
