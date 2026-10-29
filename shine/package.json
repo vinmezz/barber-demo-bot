@@ -1,0 +1,13 @@
+{
+  "name": "shine-demo-bot",
+  "version": "1.0.0",
+  "description": "VINMEZ demo: Shine Mobile Detailing — site bookings to Telegram, technicians claim jobs",
+  "main": "shine_bot.js",
+  "scripts": {
+    "start": "node shine_bot.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
