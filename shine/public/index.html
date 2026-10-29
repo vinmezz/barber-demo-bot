@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Shine Mobile Detailing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: demo strip → hero with live quote card → packages → how it works → booking → reviews → area → footer; floating chat */
+:root{
+  --bg:#f3f6f7; --surface:#ffffff; --ink:#0f1c24; --muted:#56656e; --line:#d6e0e4;
+  --bead:#0b7fa8; --bead-soft:#dff1f7; --wax:#c9821c; --deep:#0c2230; --deep-fg:#e8f3f7;
+  --ok:#1f8a4c;
+  --f-display:"Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --f-body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b151b; --surface:#122029; --ink:#e6eef1; --muted:#9db0b9; --line:#22343f;
+  --bead:#3bb4dc; --bead-soft:#123544; --wax:#e3a447; --deep:#06121a; --deep-fg:#e8f3f7; --ok:#4cc27e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b151b; --surface:#122029; --ink:#e6eef1; --muted:#9db0b9; --line:#22343f;
+  --bead:#3bb4dc; --bead-soft:#123544; --wax:#e3a447; --deep:#06121a; --deep-fg:#e8f3f7; --ok:#4cc27e; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
+.eyebrow{font:500 .75rem var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--bead)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+section{padding-block:64px}
+button,input,select{font:inherit}
+:focus-visible{outline:2px solid var(--bead);outline-offset:2px}
+
+.demo{background:var(--wax);color:#1b1205;font-size:.82rem;font-weight:600}
+.demo .wrap{display:flex;gap:12px;justify-content:space-between;align-items:center;padding-block:6px;flex-wrap:wrap}
+
+header{background:var(--deep);color:var(--deep-fg)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px}
+.logo{font:800 1.25rem var(--f-display);display:flex;align-items:center;gap:8px}
+.logo svg{width:26px;height:26px}
+.langs{display:flex;gap:4px}
+.langs button{background:transparent;border:1px solid #2c4a5a;color:var(--deep-fg);border-radius:6px;padding:4px 9px;cursor:pointer;font:500 .8rem var(--f-mono)}
+.langs button[aria-pressed="true"]{background:var(--bead);border-color:var(--bead);color:#fff}
+
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center;padding-block:48px 64px}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);line-height:1.02;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--bead)}
+.hero p{color:#b6cad3;max-width:52ch;font-size:1.08rem}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{border:0;border-radius:10px;padding:13px 20px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--bead);color:#fff}
+.btn-ghost{background:transparent;color:var(--deep-fg);border:1px solid #33586a}
+.facts{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
+.facts div{display:flex;flex-direction:column}
+.facts b{font:600 1.4rem var(--f-mono);color:#fff}
+.facts span{font-size:.8rem;color:#8fa9b5}
+
+.quote{background:var(--surface);color:var(--ink);border-radius:16px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.quote h3{font-size:1.1rem;margin-bottom:12px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.seg button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:9px 4px;cursor:pointer;font-size:.88rem}
+.seg button[aria-pressed="true"]{border-color:var(--bead);background:var(--bead-soft);color:var(--bead);font-weight:600}
+.qtotal{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);padding-top:12px;margin-top:4px}
+.qtotal b{font:600 2rem var(--f-mono)}
+.small{font-size:.82rem;color:var(--muted)}
+
+.pk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.pk{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.pk.pop{border-color:var(--bead);box-shadow:0 0 0 1px var(--bead)}
+.pk .tag{align-self:flex-start;font:500 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--bead);color:#fff;padding:3px 8px;border-radius:4px}
+.pk .price{font:600 2.1rem var(--f-mono)}
+.pk .price small{font-size:.85rem;color:var(--muted)}
+.pk ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.pk li{display:flex;gap:8px}
+.pk li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--bead);margin-top:8px;flex:none}
+.pk .meta{display:flex;justify-content:space-between;font:500 .8rem var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:auto}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px;counter-reset:s}
+.step{border-top:3px solid var(--bead);padding-top:14px}
+.step::before{counter-increment:s;content:counter(s);font:600 .85rem var(--f-mono);color:var(--bead)}
+.step h3{font-size:1.1rem;margin:6px 0}
+.step p{margin:0;color:var(--muted);font-size:.93rem}
+
+.book{background:var(--surface);border-block:1px solid var(--line)}
+.book-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;margin-top:24px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:.82rem;font-weight:600;color:var(--muted)}
+input,select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:11px 12px;width:100%}
+.summary{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;align-self:start}
+.row{display:flex;justify-content:space-between;gap:12px;font-size:.93rem}
+.row b{font-family:var(--f-mono)}
+.row.total{border-top:1px solid var(--line);padding-top:10px;font-size:1.05rem}
+
+.done{display:flex;flex-direction:column;gap:14px}
+.tg{background:#17212b;color:#e9eef2;border-radius:12px;padding:14px;font-size:.88rem;max-width:420px}
+.tg .who{color:#6ab3f3;font-weight:600;margin-bottom:6px}
+.tg pre{margin:0;white-space:pre-wrap;font:inherit;line-height:1.5}
+.tg .btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.tg .btns span{background:#2b5278;text-align:center;border-radius:6px;padding:7px;font-size:.82rem}
+.ok{color:var(--ok);font-weight:600}
+
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.rev{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.stars{color:var(--wax);letter-spacing:2px}
+.rev p{margin:0}
+.rev .by{font-size:.85rem;color:var(--muted);margin-top:auto}
+
+.area{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.area span{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:.9rem}
+
+footer{background:var(--deep);color:#9fb6c1;padding-block:28px;font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{color:var(--deep-fg)}
+
+/* chat */
+.fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--bead);color:#fff;border:0;border-radius:999px;padding:14px 18px;font-weight:600;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.3);display:flex;gap:8px;align-items:center}
+.chat{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:21;width:min(360px,calc(100vw - 32px));height:min(520px,calc(100vh - 120px));background:var(--surface);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.chat-h{background:var(--deep);color:var(--deep-fg);padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.chat-h small{display:block;color:#8fd3a8;font-size:.75rem}
+.chat-h button{background:transparent;border:0;color:var(--deep-fg);font-size:1.3rem;cursor:pointer}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:85%;padding:9px 12px;border-radius:12px;font-size:.92rem}
+.m.bot{background:var(--bead-soft);align-self:flex-start;border-bottom-left-radius:4px}
+.m.me{background:var(--bead);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.quick button{border:1px solid var(--bead);color:var(--bead);background:transparent;border-radius:999px;padding:6px 11px;cursor:pointer;font-size:.85rem}
+.chat-in{display:flex;border-top:1px solid var(--line)}
+.chat-in input{border:0;border-radius:0;background:transparent}
+.chat-in button{border:0;background:transparent;color:var(--bead);font-weight:600;padding:0 14px;cursor:pointer}
+
+@media (max-width:860px){
+  .hero,.book-grid{grid-template-columns:1fr}
+  .pk-grid,.rev-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  form{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  section{padding-block:44px}
+}
+@media (prefers-reduced-motion:no-preference){.btn,.pk{transition:transform .15s}.btn:hover{transform:translateY(-1px)}}
+</style>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap"><span data-i18n="demo">Demo website · fictional business · built by VINMEZ</span><span class="mono">vinmez.com</span></div></div>
+
+<header>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M13 2C13 2 5 11.5 5 16.5a8 8 0 0 0 16 0C21 11.5 13 2 13 2z" fill="#3bb4dc"/><path d="M9.5 16.5a3.5 3.5 0 0 0 3.5 3.5" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>Shine Mobile Detailing</div>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="es" aria-pressed="false">ES</button>
+        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      </div>
+    </div>
+    <div class="hero">
+      <div>
+        <span class="eyebrow" data-i18n="heroEyebrow">Mobile car wash & detailing · Los Angeles</span>
+        <h1 data-i18n-html="heroTitle">We come to you. Your car leaves <em>showroom clean.</em></h1>
+        <p data-i18n="heroText">Home, office or parking garage. Book in 60 seconds, send a photo, get an exact price. We bring our own water and power.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#book" data-i18n="ctaBook">Book a wash</a>
+          <button class="btn btn-ghost" type="button" id="heroChat" data-i18n="ctaChat">Get a quote in chat</button>
+        </div>
+        <div class="facts">
+          <div><b class="mono">2 gal</b><span data-i18n="f1">water per wash</span></div>
+          <div><b class="mono">7 days</b><span data-i18n="f2">a week, 7am–8pm</span></div>
+          <div><b class="mono">4.9★</b><span data-i18n="f3">312 reviews (demo)</span></div>
+        </div>
+      </div>
+      <div class="quote" aria-live="polite">
+        <h3 data-i18n="qTitle">Instant price</h3>
+        <label data-i18n="qVehicle">Vehicle</label>
+        <div class="seg" id="qVeh">
+          <button type="button" data-v="0" aria-pressed="true" data-i18n="sedan">Sedan</button>
+          <button type="button" data-v="20" aria-pressed="false" data-i18n="suv">SUV</button>
+          <button type="button" data-v="40" aria-pressed="false" data-i18n="truck">Truck / Van</button>
+        </div>
+        <label data-i18n="qPackage">Package</label>
+        <div class="seg" id="qPkg">
+          <button type="button" data-p="49" aria-pressed="true">Express</button>
+          <button type="button" data-p="149" aria-pressed="false">Full</button>
+          <button type="button" data-p="499" aria-pressed="false">Ceramic</button>
+        </div>
+        <div class="qtotal"><span class="small" data-i18n="qFrom">Your price</span><b id="qPrice">$49</b></div>
+        <p class="small" data-i18n="qNote">Exact price confirmed after you send a photo. No hidden fees.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="packages">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="pkEyebrow">Packages</span>
+    <h2 data-i18n="pkTitle">Pick a level of clean</h2>
+    <div class="pk-grid">
+      <article class="pk">
+        <h3>Express Wash</h3>
+        <div class="price">$49 <small data-i18n="sedanPrice">sedan</small></div>
+        <ul>
+          <li data-i18n="e1">Hand wash, pH-neutral soap</li>
+          <li data-i18n="e2">Wheels & tire shine</li>
+          <li data-i18n="e3">Windows inside & out</li>
+          <li data-i18n="e4">Quick interior vacuum</li>
+        </ul>
+        <div class="meta"><span>≈ 45 min</span><span>SUV +$20</span></div>
+      </article>
+      <article class="pk pop">
+        <span class="tag" data-i18n="popular">Most booked</span>
+        <h3>Full Detail</h3>
+        <div class="price">$149 <small data-i18n="sedanPrice">sedan</small></div>
+        <ul>
+          <li data-i18n="d1">Everything in Express</li>
+          <li data-i18n="d2">Clay bar + spray sealant</li>
+          <li data-i18n="d3">Seats shampooed or leather conditioned</li>
+          <li data-i18n="d4">Door jambs, vents, cupholders</li>
+        </ul>
+        <div class="meta"><span>≈ 2.5 h</span><span>SUV +$20</span></div>
+      </article>
+      <article class="pk">
+        <h3>Ceramic Coating</h3>
+        <div class="price">$499 <small data-i18n="sedanPrice">sedan</small></div>
+        <ul>
+          <li data-i18n="c1">Full Detail included</li>
+          <li data-i18n="c2">One-step paint correction</li>
+          <li data-i18n="c3">9H ceramic, 2-year protection</li>
+          <li data-i18n="c4">Water beads off for months</li>
+        </ul>
+        <div class="meta"><span>≈ 6 h</span><span>SUV +$40</span></div>
+      </article>
+    </div>
+    <p class="small" style="margin-top:14px" data-i18n="sub">Membership: wash every 2 weeks, 15% off. We text you a day before.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="howEyebrow">How it works</span>
+    <h2 data-i18n="howTitle">From request to clean car</h2>
+    <div class="steps">
+      <div class="step"><h3 data-i18n="s1t">Book or message</h3><p data-i18n="s1p">Site, WhatsApp or Telegram. Our assistant answers 24/7 in English, Spanish or Russian.</p></div>
+      <div class="step"><h3 data-i18n="s2t">Send a photo</h3><p data-i18n="s2p">We confirm the exact price before anyone drives out.</p></div>
+      <div class="step"><h3 data-i18n="s3t">Detailer is assigned</h3><p data-i18n="s3p">You get the name, photo and arrival window by text.</p></div>
+      <div class="step"><h3 data-i18n="s4t">Pay after the job</h3><p data-i18n="s4p">Card, Zelle or cash. Receipt goes to your phone.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="bookEyebrow">Booking</span>
+    <h2 data-i18n="bookTitle">Book your wash</h2>
+    <div class="book-grid">
+      <div id="formBox">
+        <form id="bookForm" novalidate>
+          <div class="field"><label for="bPkg" data-i18n="qPackage">Package</label>
+            <select id="bPkg"><option value="49">Express Wash · $49</option><option value="149" selected>Full Detail · $149</option><option value="499">Ceramic Coating · $499</option></select></div>
+          <div class="field"><label for="bVeh" data-i18n="qVehicle">Vehicle</label>
+            <select id="bVeh"><option value="0">Sedan / Coupe</option><option value="20">SUV / Crossover (+$20)</option><option value="40">Truck / Van (+$40)</option></select></div>
+          <div class="field"><label for="bDate" data-i18n="date">Date</label><input id="bDate" type="date" required></div>
+          <div class="field"><label for="bTime" data-i18n="time">Time</label>
+            <select id="bTime"><option>8:00 – 10:00</option><option selected>10:00 – 12:00</option><option>12:00 – 14:00</option><option>14:00 – 16:00</option><option>16:00 – 18:00</option></select></div>
+          <div class="field full"><label for="bAddr" data-i18n="addr">Address</label><input id="bAddr" value="8560 Sunset Blvd, West Hollywood, CA" required></div>
+          <div class="field"><label for="bName" data-i18n="name">Name</label><input id="bName" value="Alex Rivera" required></div>
+          <div class="field"><label for="bPhone" data-i18n="phone">Phone</label><input id="bPhone" type="tel" value="(323) 555-0148" required></div>
+          <div class="field full"><label for="bPhoto" data-i18n="photo">Photo of the car (optional)</label><input id="bPhoto" type="file" accept="image/*"></div>
+          <div class="field full"><button class="btn btn-primary" type="submit" data-i18n="send">Send request</button></div>
+        </form>
+      </div>
+      <aside class="summary" aria-live="polite">
+        <h3 data-i18n="sumTitle">Your order</h3>
+        <div class="row"><span id="sPkg">Full Detail</span><b id="sBase">$149</b></div>
+        <div class="row"><span data-i18n="sizeAdj">Vehicle size</span><b id="sVeh">$0</b></div>
+        <div class="row"><span data-i18n="travel">Travel in service area</span><b>$0</b></div>
+        <div class="row total"><span data-i18n="total">Total</span><b id="sTotal">$149</b></div>
+        <p class="small" data-i18n="sumNote">Nothing is charged now. You pay after the job.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="revEyebrow">Reviews · sample</span>
+    <h2 data-i18n="revTitle">What clients say</h2>
+    <div class="rev-grid">
+      <div class="rev"><div class="stars">★★★★★</div><p data-i18n="r1">Booked at 9pm through the chat, they were in my garage at 10 the next morning. Seats look new.</p><div class="by">Maria G. · Silver Lake</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p data-i18n="r2">Sent a photo of the dog hair situation and got an honest price. No surprise at the end.</p><div class="by">Daniel K. · Santa Monica</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p data-i18n="r3">On the every-2-weeks plan. They text me the day before, I just leave the keys.</p><div class="by">Irina P. · Studio City</div></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="areaEyebrow">Service area</span>
+    <h2 data-i18n="areaTitle">Free travel across the Westside and the Valley</h2>
+    <div class="area"><span>West Hollywood</span><span>Beverly Hills</span><span>Hollywood</span><span>Santa Monica</span><span>Culver City</span><span>Studio City</span><span>Sherman Oaks</span><span>Burbank</span><span>Glendale</span><span>Downtown LA</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>Shine Mobile Detailing</b><br>(323) 555-0100 · WhatsApp · Telegram</div>
+    <div data-i18n="foot">Website, booking, chat assistant and team bot by <b>VINMEZ</b> · vinmez.com</div>
+  </div>
+</footer>
+
+<button class="fab" type="button" id="fab" aria-expanded="false" aria-controls="chat">💬 <span data-i18n="chatFab">Chat with us</span></button>
+<div class="chat" id="chat" hidden role="dialog" aria-label="Chat">
+  <div class="chat-h"><div><b>Shine Assistant</b><small data-i18n="online">● online, replies instantly</small></div><button type="button" id="chatClose" aria-label="Close">×</button></div>
+  <div class="msgs" id="msgs"></div>
+  <div class="quick" id="quick"></div>
+  <form class="chat-in" id="chatForm"><input id="chatText" aria-label="Message" placeholder="Type a message…"><button type="submit">Send</button></form>
+</div>
+
+<script>
+const T={
+en:{},
+es:{demo:"Sitio de demostración · negocio ficticio · hecho por VINMEZ",heroEyebrow:"Lavado y detallado a domicilio · Los Ángeles",heroTitle:"Vamos a ti. Tu auto queda <em>como de agencia.</em>",heroText:"Casa, oficina o estacionamiento. Reserva en 60 segundos, envía una foto y recibe el precio exacto. Llevamos agua y energía.",ctaBook:"Reservar lavado",ctaChat:"Cotizar por chat",f1:"de agua por lavado",f2:"a la semana, 7am–8pm",f3:"312 reseñas (demo)",qTitle:"Precio al instante",qVehicle:"Vehículo",sedan:"Sedán",suv:"SUV",truck:"Camioneta",qPackage:"Paquete",qFrom:"Tu precio",qNote:"El precio exacto se confirma con una foto. Sin cargos ocultos.",pkEyebrow:"Paquetes",pkTitle:"Elige tu nivel de limpieza",sedanPrice:"sedán",popular:"Más pedido",sub:"Membresía: lavado cada 2 semanas, 15% de descuento. Te avisamos un día antes.",howEyebrow:"Cómo funciona",howTitle:"De la solicitud al auto limpio",s1t:"Reserva o escribe",s1p:"Sitio, WhatsApp o Telegram. Nuestro asistente responde 24/7 en inglés, español o ruso.",s2t:"Envía una foto",s2p:"Confirmamos el precio exacto antes de salir.",s3t:"Se asigna un detallador",s3p:"Recibes su nombre, foto y hora de llegada por mensaje.",s4t:"Paga al terminar",s4p:"Tarjeta, Zelle o efectivo. El recibo llega a tu teléfono.",bookEyebrow:"Reserva",bookTitle:"Reserva tu lavado",date:"Fecha",time:"Hora",addr:"Dirección",name:"Nombre",phone:"Teléfono",photo:"Foto del auto (opcional)",send:"Enviar solicitud",sumTitle:"Tu pedido",sizeAdj:"Tamaño del vehículo",travel:"Traslado en zona de servicio",total:"Total",sumNote:"No se cobra nada ahora. Pagas al terminar.",revEyebrow:"Reseñas · ejemplo",revTitle:"Lo que dicen los clientes",areaEyebrow:"Zona de servicio",areaTitle:"Traslado gratis en el Westside y el Valle",chatFab:"Escríbenos",online:"● en línea, responde al instante"},
+ru:{demo:"Демо-сайт · вымышленная компания · сделано VINMEZ",heroEyebrow:"Выездная мойка и детейлинг · Лос-Анджелес",heroTitle:"Приедем к вам. Машина будет <em>как из салона.</em>",heroText:"Дом, офис или паркинг. Запись за 60 секунд, отправьте фото и получите точную цену. Воду и электричество привозим с собой.",ctaBook:"Записаться",ctaChat:"Узнать цену в чате",f1:"воды на мойку",f2:"в неделю, 7:00–20:00",f3:"312 отзывов (демо)",qTitle:"Цена сразу",qVehicle:"Машина",sedan:"Седан",suv:"Кроссовер",truck:"Пикап / вэн",qPackage:"Пакет",qFrom:"Ваша цена",qNote:"Точная цена подтверждается по фото. Без скрытых доплат.",pkEyebrow:"Пакеты",pkTitle:"Выберите уровень чистоты",sedanPrice:"седан",popular:"Чаще всего",sub:"Абонемент: мойка раз в 2 недели, скидка 15%. Напоминаем за день.",howEyebrow:"Как это работает",howTitle:"От заявки до чистой машины",s1t:"Запишитесь или напишите",s1p:"Сайт, WhatsApp или Telegram. Ассистент отвечает 24/7 на английском, испанском и русском.",s2t:"Отправьте фото",s2p:"Подтверждаем точную цену до выезда.",s3t:"Назначаем мастера",s3p:"Вы получаете имя, фото и время приезда в сообщении.",s4t:"Оплата после работы",s4p:"Карта, Zelle или наличные. Чек приходит на телефон.",bookEyebrow:"Запись",bookTitle:"Записаться на мойку",date:"Дата",time:"Время",addr:"Адрес",name:"Имя",phone:"Телефон",photo:"Фото машины (необязательно)",send:"Отправить заявку",sumTitle:"Ваш заказ",sizeAdj:"Размер машины",travel:"Выезд в зоне обслуживания",total:"Итого",sumNote:"Сейчас ничего не списывается. Оплата после работы.",revEyebrow:"Отзывы · пример",revTitle:"Что говорят клиенты",areaEyebrow:"Зона обслуживания",areaTitle:"Бесплатный выезд по Westside и Долине",chatFab:"Написать нам",online:"● онлайн, отвечает сразу",foot:"Сайт, запись, чат-ассистент и бот для команды — <b>VINMEZ</b> · vinmez.com"}
+};
+document.querySelectorAll("[data-i18n],[data-i18n-html]").forEach(el=>{
+  const k=el.dataset.i18n||el.dataset.i18nHtml; T.en[k]=el.innerHTML;
+});
+let lang="en";
+function setLang(l){
+  lang=l;
+  document.querySelectorAll("[data-i18n],[data-i18n-html]").forEach(el=>{
+    const k=el.dataset.i18n||el.dataset.i18nHtml;
+    el.innerHTML=(T[l]&&T[l][k])||T.en[k];
+  });
+  document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===l));
+  document.documentElement.lang=l;
+  if(!chat.hidden){resetChat();}
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+
+/* hero quote */
+let qv=0,qp=49;
+function seg(id,attr,cb){document.querySelectorAll("#"+id+" button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#"+id+" button").forEach(x=>x.setAttribute("aria-pressed",x===b));cb(+b.dataset[attr]);upQ();});}
+seg("qVeh","v",v=>qv=v);seg("qPkg","p",p=>qp=p);
+function upQ(){const add=qp===499&&qv?qv*2:qv;document.getElementById("qPrice").textContent="$"+(qp+add);}
+
+/* booking */
+const $=id=>document.getElementById(id);
+const d=new Date();d.setDate(d.getDate()+1);$("bDate").value=d.toISOString().slice(0,10);
+const names={49:"Express Wash",149:"Full Detail",499:"Ceramic Coating"};
+function upS(){const p=+$("bPkg").value,v=+$("bVeh").value,add=p===499&&v?v*2:v;
+  $("sPkg").textContent=names[p];$("sBase").textContent="$"+p;$("sVeh").textContent="$"+add;$("sTotal").textContent="$"+(p+add);return p+add;}
+$("bPkg").onchange=upS;$("bVeh").onchange=upS;upS();
+const API="";
+const PKG_KEY={49:"express",149:"full",499:"ceramic"},VEH_KEY={0:"sedan",20:"suv",40:"truck"};
+function shrink(file){return new Promise(ok=>{if(!file)return ok(null);const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1280/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.8));};im.onerror=()=>ok(null);im.src=r.result;};r.readAsDataURL(file);});}
+$("bookForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const req=["bDate","bAddr","bName","bPhone"].find(id=>!$(id).value.trim());
+  if(req){$(req).focus();return;}
+  const btn=e.submitter||$("bookForm").querySelector("button[type=submit]");
+  btn.disabled=true;btn.textContent="…";
+  const total=upS();
+  const body={package:PKG_KEY[$("bPkg").value],vehicle:VEH_KEY[$("bVeh").value],date:$("bDate").value,time:$("bTime").value,
+    address:$("bAddr").value,name:$("bName").value,phone:$("bPhone").value,lang,photo:await shrink($("bPhoto").files[0])};
+  let ref=null,err="";
+  for(let i=0;i<2&&!ref;i++){try{const r=await fetch(API+"/api/booking",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json();if(r.ok)ref=d.ref;else err=d.error||"";}catch(x){}}
+  const L={en:["Request sent","Order","We'll text you within 5 minutes to confirm the detailer and arrival time.","Something went wrong. Please call (323) 555-0100 or try again."],
+           es:["Solicitud enviada","Pedido","Te escribimos en 5 minutos para confirmar el detallador y la hora.","Algo salió mal. Llama al (323) 555-0100 o inténtalo de nuevo."],
+           ru:["Заявка отправлена","Заказ","Мы напишем в течение 5 минут: кто приедет и во сколько.","Не получилось отправить. Позвоните (323) 555-0100 или попробуйте ещё раз."]}[lang];
+  if(!ref){btn.disabled=false;btn.textContent=T[lang]?.send||T.en.send;let p=$("formErr");if(!p){p=document.createElement("p");p.id="formErr";p.style.color="#c0392b";$("bookForm").appendChild(p);}p.textContent=(err?err+" ":"")+L[3];return;}
+  $("formBox").innerHTML=`<div class="done"><p class="ok">✓ ${L[0]} · ${L[1]} <span class="mono">${ref}</span></p><p>${L[2]}</p><p class="small">$${total}</p>
+  <button class="btn btn-ghost" style="color:var(--bead);border-color:var(--bead);align-self:flex-start" type="button" onclick="location.reload()">↺ ${lang==="ru"?"Новая заявка":lang==="es"?"Nueva solicitud":"New request"}</button></div>`;
+});
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+/* chat */
+const chat=$("chat"),msgs=$("msgs"),quick=$("quick");
+const C={
+en:{hi:"Hi! I'm Shine's assistant. I can give you a price, book a time, or answer questions.",q:["Get a price","Book for tomorrow","Do you need water?"],veh:"What do you drive?",vehs:["Sedan","SUV","Truck / Van"],pkg:"Which package?",price:p=>`That's $${p}. Want me to book it? Send a photo and I'll confirm the exact price.`,yes:["Book it","Send photo later"],book:"Great. What's the address? (In the real version this goes straight to the team.)",water:"No. We bring our own water and power. Just make sure we can park next to the car.",fallback:"Got it. A team member will reply here in a few minutes. Want a price meanwhile?",done:"Booked for tomorrow 10–12. You'll get a text with the detailer's name. ✅"},
+es:{hi:"¡Hola! Soy el asistente de Shine. Te doy precio, agendo o respondo dudas.",q:["Ver precio","Reservar para mañana","¿Necesitan agua?"],veh:"¿Qué vehículo tienes?",vehs:["Sedán","SUV","Camioneta"],pkg:"¿Qué paquete?",price:p=>`Son $${p}. ¿Lo reservo? Envía una foto y confirmo el precio exacto.`,yes:["Reservar","Foto después"],book:"Perfecto. ¿Cuál es la dirección? (En la versión real va directo al equipo.)",water:"No. Llevamos agua y energía. Solo necesitamos estacionar junto al auto.",fallback:"Entendido. Alguien del equipo responde aquí en minutos. ¿Quieres un precio mientras?",done:"Reservado para mañana 10–12. Recibirás un mensaje con el nombre del detallador. ✅"},
+ru:{hi:"Здравствуйте! Я ассистент Shine. Подскажу цену, запишу или отвечу на вопросы.",q:["Узнать цену","Записаться на завтра","Нужна ли вода?"],veh:"Какая у вас машина?",vehs:["Седан","Кроссовер","Пикап / вэн"],pkg:"Какой пакет?",price:p=>`Получается $${p}. Записать? Пришлите фото, и я подтвержу точную цену.`,yes:["Записать","Фото позже"],book:"Отлично. Какой адрес? (В рабочей версии заявка сразу уходит команде.)",water:"Нет, воду и электричество привозим свои. Нужно только место, чтобы встать рядом.",fallback:"Понял. Сотрудник ответит здесь через пару минут. Пока подсказать цену?",done:"Записал на завтра 10–12. Придёт сообщение с именем мастера. ✅"}};
+let st={};
+function say(t,who="bot"){const m=document.createElement("div");m.className="m "+who;m.textContent=t;msgs.appendChild(m);msgs.scrollTop=msgs.scrollHeight;}
+function opts(list,fn){quick.innerHTML="";list.forEach((o,i)=>{const b=document.createElement("button");b.type="button";b.textContent=o;b.onclick=()=>{say(o,"me");quick.innerHTML="";setTimeout(()=>fn(i,o),450);};quick.appendChild(b);});}
+function home(){const c=C[lang];opts(c.q,i=>{if(i===0)askVeh();else if(i===1){say(c.done);setTimeout(home,600);}else{say(c.water);setTimeout(home,600);}});}
+function askVeh(){const c=C[lang];say(c.veh);opts(c.vehs,i=>{st.v=[0,20,40][i];say(c.pkg);opts(["Express $49","Full $149","Ceramic $499"],j=>{const p=[49,149,499][j];say(c.price(p+(p===499&&st.v?st.v*2:st.v)));opts(c.yes,k=>{say(k===0?c.book:c.done);setTimeout(home,600);});});});}
+function resetChat(){msgs.innerHTML="";st={};say(C[lang].hi);home();}
+function openChat(){chat.hidden=false;$("fab").setAttribute("aria-expanded","true");if(!msgs.children.length)resetChat();$("chatText").focus();}
+$("fab").onclick=()=>chat.hidden?openChat():(chat.hidden=true,$("fab").setAttribute("aria-expanded","false"));
+$("heroChat").onclick=openChat;$("chatClose").onclick=()=>{chat.hidden=true;$("fab").setAttribute("aria-expanded","false");};
+$("chatForm").addEventListener("submit",e=>{e.preventDefault();const t=$("chatText").value.trim();if(!t)return;say(t,"me");$("chatText").value="";
+  hist.push({role:"user",content:t});quick.innerHTML="";
+  fetch(API+"/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:hist})}).then(r=>r.json()).then(d=>{
+    if(d.reply){hist.push({role:"assistant",content:d.reply});say(d.reply);home();}else throw 0;
+  }).catch(()=>{/price|cost|цен|скольк|precio/i.test(t)?askVeh():(say(C[lang].fallback),home());});});
+let hist=[];
+</script>
+
+</body>
+</html>

@@ -13,6 +13,9 @@
 // ============================================================
 
 const http = require("http");
+const fs = require("fs");
+const path = require("path");
+const SITE_HTML = fs.readFileSync(path.join(__dirname, "public", "index.html"));
 const TelegramBot = require("node-telegram-bot-api");
 
 const BOT_TOKEN = process.env.BOT_TOKEN || "";
@@ -363,7 +366,11 @@ http.createServer(async (req, res) => {
   if (req.method === "OPTIONS") { res.writeHead(204); return res.end(); }
   const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0];
 
-  if (req.method === "GET" && (req.url === "/" || req.url === "/health")) return sendJSON(res, 200, { ok: true, bot: !!bot, team: MASTERS_CHAT_ID ? "group" : "owner" });
+  if (req.method === "GET" && req.url === "/health") return sendJSON(res, 200, { ok: true, bot: !!bot, team: MASTERS_CHAT_ID ? "group" : "owner" });
+  if (req.method === "GET" && (req.url === "/" || req.url.startsWith("/?") || req.url === "/index.html")) {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" });
+    return res.end(SITE_HTML);
+  }
 
   if (req.method === "POST" && req.url === "/api/booking") {
     if (limited(ip)) return sendJSON(res, 429, { error: "Too many requests, try again in a minute." });
